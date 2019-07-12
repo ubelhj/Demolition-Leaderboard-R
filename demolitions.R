@@ -7,7 +7,6 @@ library(data.table)
 library(jsonlite)
 library(shiny)
 library(purrr)
-source("api-key.R")
 
 
 ##drop_auth(new_user = T)
@@ -16,8 +15,8 @@ source("api-key.R")
 
 token <- drop_auth(rdstoken = "token.rds")
 
-
 drop_download('/Apps/Demo Leaderboard/leaderboard.csv', overwrite = TRUE, dtoken = token)
+
 
 RV <- reactiveValues()
 
