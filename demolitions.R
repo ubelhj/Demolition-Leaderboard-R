@@ -7,9 +7,10 @@ library(data.table)
 library(jsonlite)
 library(shiny)
 library(purrr)
+source("api-key.R")
 
 
-##drop_auth(new_user = T)
+drop_auth(new_user = T)
 
 token <- drop_auth(rdstoken = "token.rds")
 
