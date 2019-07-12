@@ -20,19 +20,18 @@ leaderboard <- read.csv("./leaderboard.csv")
   
 leaderboard <- leaderboard[order(-leaderboard$Demos), ]
 
-## Local Manipulation 
+orderedDemos <- frank(-leaderboard$Demos, ties.method = "min")
 
-##leaderboard <- read.csv("./leaderboard.csv") 
+orderedExterms <- frank(-leaderboard$Exterminations, ties.method = "min")
 
-##leaderboard <- leaderboard[order(-leaderboard$Demos), ]
+leaderboard <- leaderboard %>% 
+  mutate("Demolitions Rank" = orderedDemos)
 
-## Use Row Numbers of data to delete here
-##leaderboard <- leaderboard[-c(21, 41, 50, 52), ]
+leaderboard <- leaderboard %>% 
+  mutate("Exterminations Rank" = orderedExterms)
 
+leaderboard <- leaderboard[,c(1, 4, 2, 5, 3)]
 
-##leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
-
-##write.csv(leaderboard, "./leaderboard.csv", row.names = FALSE)
 
 ## Webserver Manipulation
 
