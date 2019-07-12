@@ -10,12 +10,13 @@ library(purrr)
 source("api-key.R")
 
 
-drop_auth(new_user = T)
+##drop_auth(new_user = T)
+##token <- drop_auth()
+##saveRDS(token, file = "token.rds")
 
 token <- drop_auth(rdstoken = "token.rds")
 
-##token <- drop_auth()
-##saveRDS(token, file = "token.rds")
+
 drop_download('/Apps/Demo Leaderboard/leaderboard.csv', overwrite = TRUE, dtoken = token)
 
 RV <- reactiveValues()
