@@ -20,6 +20,8 @@ leaderboard <- read.csv("./leaderboard.csv")
   
 leaderboard <- leaderboard[order(-leaderboard$Demos), ]
 
+leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
+
 orderedDemos <- frank(-leaderboard$Demos, ties.method = "min")
 
 orderedExterms <- frank(-leaderboard$Exterminations, ties.method = "min")
@@ -35,7 +37,7 @@ leaderboard <- leaderboard[,c(1, 4, 2, 5, 3)]
 
 ## Webserver Manipulation
 
-RV$leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
+RV$leaderboard <- leaderboard
 
 server <- function(input, output) {
   output$table <- renderDataTable(RV$leaderboard)
