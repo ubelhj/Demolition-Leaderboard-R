@@ -16,9 +16,19 @@ drop_download('/Apps/Demo Leaderboard/leaderboard.csv', overwrite = TRUE, dtoken
 
 RV <- reactiveValues(data = leaderboard)
 
-leaderboard <- read.csv("./leaderboard.csv") 
+leaderboard2 <- read.csv("./leaderboard.csv") 
   
-leaderboard <- leaderboard[order(-leaderboard$Demos),]
+leaderboard <- leaderboard[order(-leaderboard$Demos), ]
+
+## Local Manipulation 
+
+###leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
+
+###leaderboard <- leaderboard[-c(21, 41, 50, 52), ]
+
+###write.csv(leaderboard, "./leaderboard.csv", row.names = FALSE)
+
+## Webserver Manipulation
 
 RV$leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
 
