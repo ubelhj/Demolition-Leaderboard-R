@@ -20,39 +20,40 @@ drop_download('/Apps/Demo Leaderboard/leaderboard.csv', overwrite = TRUE, dtoken
 
 RV <- reactiveValues()
 
-leaderboard <- read.csv("./leaderboard.csv") 
+loadLeaderboard <- function() {
+
+  leaderboard <- read.csv("./leaderboard.csv", fileEncoding="UTF-8-BOM") 
   
-leaderboard <- leaderboard[order(-leaderboard$Demos), ]
+  leaderboard <- leaderboard[order(-leaderboard$Demos), ]
+  
+  leaderboard <- leaderboard[!duplicated(leaderboard[1]), ]
+  
+  orderedDemos <- frank(-leaderboard$Demos, ties.method = "min")
+  
+  orderedExterms <- frank(-leaderboard$Exterminations, ties.method = "min")
+  
+  leaderboard <- leaderboard %>% 
+    mutate("Demolitions Rank" = orderedDemos)
+  
+  leaderboard <- leaderboard %>% 
+    mutate("Exterminations Rank" = orderedExterms)
+  
+  leaderboard <- leaderboard[,c(1, 4, 2, 5, 3)]
 
-leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
-
-orderedDemos <- frank(-leaderboard$Demos, ties.method = "min")
-
-orderedExterms <- frank(-leaderboard$Exterminations, ties.method = "min")
-
-leaderboard <- leaderboard %>% 
-  mutate("Demolitions Rank" = orderedDemos)
-
-leaderboard <- leaderboard %>% 
-  mutate("Exterminations Rank" = orderedExterms)
-
-leaderboard <- leaderboard[,c(1, 4, 2, 5, 3)]
+  return(leaderboard)
+}
 
 
 ## Webserver Manipulation
 
-RV$leaderboard <- leaderboard
+RV$leaderboard <- loadLeaderboard()
 
 server <- function(input, output) {
   output$table <- renderDataTable(RV$leaderboard)
   observeEvent(input$refresh, {
     drop_download('/Apps/Demo Leaderboard/leaderboard.csv', overwrite = TRUE, dtoken = token)
     
-    leaderboard <- read.csv("./leaderboard.csv") 
-    
-    leaderboard <- leaderboard[order(-leaderboard$Demos),] 
-    
-    RV$leaderboard <- leaderboard[!duplicated(leaderboard$Username), ]
+    RV$leaderboard <- loadLeaderboard()
   })
 }
 
