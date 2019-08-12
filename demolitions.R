@@ -24,9 +24,11 @@ loadLeaderboard <- function() {
 
   leaderboard <- read.csv("./leaderboard.csv", fileEncoding="UTF-8-BOM") 
   
-  leaderboard <- leaderboard[order(-leaderboard$Demos), ]
+  leaderboard <- leaderboard[order(-row_number(leaderboard)), ]
   
   leaderboard <- leaderboard[!duplicated(leaderboard[1]), ]
+  
+  leaderboard <- leaderboard[order(-leaderboard$Demos), ]
   
   orderedDemos <- frank(-leaderboard$Demos, ties.method = "min")
   
@@ -38,7 +40,7 @@ loadLeaderboard <- function() {
   leaderboard <- leaderboard %>% 
     mutate("Exterminations Rank" = orderedExterms)
   
-  leaderboard <- leaderboard[,c(1, 4, 2, 5, 3)]
+  leaderboard <- leaderboard[ ,c(1, 4, 2, 5, 3)]
 
   return(leaderboard)
 }
